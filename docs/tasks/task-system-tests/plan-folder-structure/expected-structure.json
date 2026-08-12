@@ -1,0 +1,52 @@
+{
+  "schema": "task-plan-structure-test/v1",
+  "lifecycleFolders": [
+    "draft",
+    "pending",
+    "approved",
+    "in-progress",
+    "review",
+    "user-verification",
+    "failed-user-verification",
+    "completed",
+    "archive",
+    "parked",
+    "blocker"
+  ],
+  "planFolderPattern": "^[0-9]{5}-[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$",
+  "sectionFiles": [
+    "01-original-scope.md",
+    "02-context-and-routing.md",
+    "03-request-review.md",
+    "04-current-and-target-state.md",
+    "05-questions-and-decisions.md",
+    "06-implementation-plan.md",
+    "07-files-contracts-and-risks.md",
+    "08-testing-and-verification.md",
+    "09-browser-and-review.md",
+    "10-rollback-stop-acceptance.md",
+    "11-lifecycle-and-closeout.md",
+    "12-comments.md"
+  ],
+  "frontmatterRequiredKeys": [
+    "schema",
+    "plan_id",
+    "plan_slug",
+    "section_id",
+    "title",
+    "nav_label",
+    "order",
+    "lifecycle",
+    "status",
+    "owner",
+    "layout",
+    "summary",
+    "updated"
+  ],
+  "commentsFile": "12-comments.md",
+  "planJson": {
+    "schema": "task-plan-folder/v1",
+    "requiredSectionCount": 12,
+    "commentsAppendOnly": true
+  }
+}

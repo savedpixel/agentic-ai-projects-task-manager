@@ -1,0 +1,37 @@
+{
+  "schema": "task-plan-structure-validation/v1",
+  "passed": true,
+  "checkedAt": "2026-06-24T00:00:00Z",
+  "checks": [
+    {
+      "id": "expected-folders",
+      "passed": true,
+      "detail": "20/20 present",
+      "missing": []
+    },
+    {
+      "id": "expected-files",
+      "passed": true,
+      "detail": "17/17 present",
+      "missing": []
+    },
+    {
+      "id": "clean-active-task-root",
+      "passed": true,
+      "detail": "no .DS_Store, migration, backup, or root observations clutter under docs/tasks",
+      "found": []
+    },
+    {
+      "id": "active-instruction-stale-path-scan",
+      "passed": true,
+      "detail": "active instructions contain no stale task/documentation paths",
+      "found": []
+    },
+    {
+      "id": "semantic-contract",
+      "passed": true,
+      "detail": "validate-semantic-contract.py passed for project=docs/tasks after package self-check"
+    }
+  ],
+  "failures": []
+}

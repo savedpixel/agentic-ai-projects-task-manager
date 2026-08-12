@@ -1,0 +1,45 @@
+{
+  "schema": "package-budget/v1",
+  "budgets": [
+    {
+      "path": "docs/tasks/workflow.md",
+      "minLines": 180,
+      "minChars": 7600
+    },
+    {
+      "path": ".agents/skills/plan-task/SKILL.md",
+      "minLines": 260,
+      "minChars": 10000
+    },
+    {
+      "path": "docs/tasks/planning/README.md",
+      "minLines": 3,
+      "minChars": 150
+    },
+    {
+      "path": "docs/tasks/task-system-helpers/create-plan-folder.py",
+      "minLines": 200,
+      "minChars": 9000
+    },
+    {
+      "path": ".agents/skills/quick-fix/SKILL.md",
+      "minLines": 90,
+      "minChars": 5000
+    },
+    {
+      "path": "docs/tasks/quick-fixes/README.md",
+      "minLines": 6,
+      "minChars": 250
+    },
+    {
+      "path": "docs/tasks/task-system.config.yaml",
+      "minLines": 70,
+      "minChars": 2500
+    },
+    {
+      "path": "docs/tasks/schemas/task-system.config.schema.json",
+      "minLines": 55,
+      "minChars": 1800
+    }
+  ]
+}

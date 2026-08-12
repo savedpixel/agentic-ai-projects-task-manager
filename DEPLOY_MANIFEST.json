@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "source": "src/taskmanager/",
+  "destination": "dist/",
+  "excluded": [
+    ".DS_Store",
+    "__pycache__",
+    "previews"
+  ],
+  "files": [
+    {
+      "path": "assets/icons/icon-192.png",
+      "bytes": 1221,
+      "sha256": "ceed114c25ea0da5b2c5bf80d953e62d47b94d449e8eca115dd05c8de4a8aff5"
+    },
+    {
+      "path": "assets/icons/icon-512.png",
+      "bytes": 3549,
+      "sha256": "fadb8ed313c32422faaa0a1fc0baa91a4c10cf1131e2b9b2ea3e512dd5a08db0"
+    },
+    {
+      "path": "assets/icons/icon-maskable-512.png",
+      "bytes": 3556,
+      "sha256": "d5b2e3d10312089e86574475494d1cbed8fc14227a4610c93ac338cf15609617"
+    },
+    {
+      "path": "css/base.css",
+      "bytes": 15371,
+      "sha256": "acf9d8491b1bfd947e038ab289a167aa7c5097ee2c4d76c036b6e5d61d712bdf"
+    },
+    {
+      "path": "css/features.css",
+      "bytes": 42076,
+      "sha256": "619d554dfa6ca7e9bea61fa9298b649952351ba591968afedc4692340c0445cd"
+    },
+    {
+      "path": "css/pwa.css",
+      "bytes": 8279,
+      "sha256": "93904c9ef285e5fea67d5229cfb75084271409754f7d1e9accbba1a1c968b26c"
+    },
+    {
+      "path": "css/responsive.css",
+      "bytes": 31256,
+      "sha256": "fb51232938277a0b9e4695e9c17526efc64f254e6617651c891985d9edf23c70"
+    },
+    {
+      "path": "css/styles.css",
+      "bytes": 185,
+      "sha256": "0d2dfd7c51309691f3d4b8094426b9b7c9167bc9a8253626cfd28b5f9d79c275"
+    },
+    {
+      "path": "css/visual-polish.css",
+      "bytes": 7097,
+      "sha256": "7642820e1a2a707f292e00662750975259951578b2aee1a47c7785c35f6765e3"
+    },
+    {
+      "path": "css/workspace.css",
+      "bytes": 1547,
+      "sha256": "28eda81d94d814aea66bfddf8df960c002fd649613b342481424c0b82ecb068e"
+    },
+    {
+      "path": "data/runtime/config/browser.json",
+      "bytes": 3,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "path": "data/runtime/config/pwa.json",
+      "bytes": 921,
+      "sha256": "d25c1aaa2cfefd662744ad2f0f7eadac9be0d07f14f19471ba1dd2436aa1ed7f"
+    },
+    {
+      "path": "data/runtime/config/ui.json",
+      "bytes": 430,
+      "sha256": "3d6219371b3f8f4b37138a2d51b4405252e301d5541ea30cc38928d03d8b6009"
+    },
+    {
+      "path": "data/runtime/projects.json",
+      "bytes": 37,
+      "sha256": "6328535048add0b123d53ca8f075620c9a2298b92de80922bc0870f8a4a8eb0c"
+    },
+    {
+      "path": "index.html",
+      "bytes": 1381,
+      "sha256": "a7578b8416a251d1f3309fe620e929611483062f4857482f46a6ee1af048e605"
+    },
+    {
+      "path": "js/app/main.js",
+      "bytes": 42378,
+      "sha256": "b562964e6170d5bac4525fd61ab9e5cc532ad1443d2578ec0d27c964daa96265"
+    },
+    {
+      "path": "js/app/render-route.js",
+      "bytes": 1270,
+      "sha256": "d0e25c6a341edafe6300cb0cf78c9f71c6636c506b55114c26ae7b767de45986"
+    },
+    {
+      "path": "js/app/router.js",
+      "bytes": 983,
+      "sha256": "0df39f5a8dad7d58d49b4b8b5e14f16490a2bad92785cef886ea5bb2cc05c240"
+    },
+    {
+      "path": "js/domain/parser.js",
+      "bytes": 34069,
+      "sha256": "f43d8ddea1ad68a504fc876fec5eb0709f878ec0a1d332fc65e4e3287e69132b"
+    },
+    {
+      "path": "js/domain/writer.js",
+      "bytes": 9440,
+      "sha256": "6d34082b3df1da1ff559606a0723b40abad913eeb6f2f4c4bc4d27c149347712"
+    },
+    {
+      "path": "js/features/activity/activity-view.js",
+      "bytes": 20313,
+      "sha256": "db9381445c31c5dc66bddb4aab4bd493d9b36788b06b0b280707bca91899c194"
+    },
+    {
+      "path": "js/features/agents/agent-control-view.js",
+      "bytes": 22445,
+      "sha256": "05f14ded764bcb8ac81c0a9b840d5b07cb221cf3ababb130c8f6e4ae70c3be0e"
+    },
+    {
+      "path": "js/features/knowledge/knowledge-view.js",
+      "bytes": 5138,
+      "sha256": "dd9925187c8f5f995647a6dfe5e48fdadae7f8f0e636452fdb16686d741dfbc0"
+    },
+    {
+      "path": "js/features/projects/projects-view.js",
+      "bytes": 7860,
+      "sha256": "537cb9375f73b09c1b88184f4e3df4735c4d42d456c329c1dd97fad07edda6a9"
+    },
+    {
+      "path": "js/features/questions/questions-view.js",
+      "bytes": 9025,
+      "sha256": "2494dd3a166d629da78ec613d7649543127f7a1ae2974e14e339c98bc32868aa"
+    },
+    {
+      "path": "js/features/queue/queue-view.js",
+      "bytes": 18014,
+      "sha256": "230df89321d9875bba8a2d6f424d3c20b218fef3f2122f44a9ea1ded90c5a8f8"
+    },
+    {
+      "path": "js/features/settings/settings-view.js",
+      "bytes": 9698,
+      "sha256": "076bf32269330ce8e2bbc03138becf7678ea927e8476abcc19c6b752baf696ec"
+    },
+    {
+      "path": "js/features/task-detail/task-detail-view.js",
+      "bytes": 8147,
+      "sha256": "81b566a0493f5af0b046c06100d85e09007dbd57befb60fe2276b5ef6cf5f6e2"
+    },
+    {
+      "path": "js/features/verification/verification-view.js",
+      "bytes": 8512,
+      "sha256": "07a0b878d660497c3d8510c02ea4a2967b337f4bc6ce55e1651be85d5e005a35"
+    },
+    {
+      "path": "js/lib/utils.js",
+      "bytes": 2921,
+      "sha256": "2d28af5be67b63ebeed1b8ff01f198bc58025918799df2a9e1f1e6100d8e4b90"
+    },
+    {
+      "path": "js/services/automation-control.js",
+      "bytes": 1410,
+      "sha256": "c0b1e2e2819da47d5126a7b4e07c5069760d99fc4140a75ee92c3ba41c3ffb2d"
+    },
+    {
+      "path": "js/services/browser-cleanup.js",
+      "bytes": 3993,
+      "sha256": "1d70899d3dde7ebbb537fbb64e69c64fbbe2fecef3986472fb11870cc50393cd"
+    },
+    {
+      "path": "js/services/project-service.js",
+      "bytes": 39017,
+      "sha256": "cc2273c0f0d0151d59feb2d9321485d3cf66cbd4069cc2b4f87851fd64125a97"
+    },
+    {
+      "path": "js/services/server-fs.js",
+      "bytes": 4393,
+      "sha256": "8ed34baf453e0e0f6409094136dcff217f6d8233d42bf198f10c8a95e3b4b09d"
+    },
+    {
+      "path": "js/state/runtime-config.js",
+      "bytes": 10267,
+      "sha256": "708b53ed307c3f555165f9c9fa2b1389d8731e8da93122db05f9408efb2f60fd"
+    },
+    {
+      "path": "js/state/store.js",
+      "bytes": 14632,
+      "sha256": "3e669f54a351b2b2b77e84bc63e1d46bfd46f072c141c32da803e3b7662df024"
+    },
+    {
+      "path": "js/ui/components.js",
+      "bytes": 10998,
+      "sha256": "9c55c06aee75706bcb89ebaee1bc0fd069a484fe4b23a7d60dc5b7e16404f1ad"
+    },
+    {
+      "path": "js/ui/markdown.js",
+      "bytes": 3206,
+      "sha256": "1fdfc4c0ad865ecd0f1a31b96f2b83d666ecd1ba91f6b0eaa228601235d52730"
+    },
+    {
+      "path": "js/ui/view-helpers.js",
+      "bytes": 37358,
+      "sha256": "e31c064ffc3bb063bbdaec58a6175cb34f3dcafd902ac2d6f227d0f31e8c6c9c"
+    },
+    {
+      "path": "js/ui/views.js",
+      "bytes": 665,
+      "sha256": "b115e966ec10a8ce62c2bec6f12cc969ed4f6186c41cd636ef59933ca46fb7fe"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 1458,
+      "sha256": "4fe247e1a1f30dc6ee6af91c8536761819a641aadf0a8e91021bd9dd8949287e"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 2546,
+      "sha256": "bf1402e30659ea16cde6fba3b7496982825daa8f3a32c41b90366a6d5803ae0b"
+    }
+  ]
+}

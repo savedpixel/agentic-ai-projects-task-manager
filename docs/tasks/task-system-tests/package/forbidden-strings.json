@@ -1,0 +1,7 @@
+{
+  "forbidden": [
+    "runtime selection",
+    "target selection",
+    "browser method selector"
+  ]
+}

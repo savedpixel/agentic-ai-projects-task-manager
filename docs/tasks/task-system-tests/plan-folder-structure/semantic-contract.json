@@ -1,0 +1,593 @@
+{
+  "schema": "task-system-semantic-contract/v1",
+  "regressions": [
+    {
+      "id": "post-answer-move-to-pending-review",
+      "failureMode": "Agent records user planning answers and then asks for vague approval, execution, parking, or movement without repeating the full readable plan review.",
+      "requiredRule": "After recording user answers, locking decisions, or changing planningState/status, every response that asks for approval, move to approved, move to pending, execute, park, next step, or lifecycle movement must repeat the full Plan Quality Assessment in the same chat message.",
+      "requiredSameMessageFields": [
+        "plan path",
+        "what is good",
+        "what is risky / not good",
+        "what was not accounted for yet",
+        "assumptions",
+        "recommended path",
+        "plan score out of 10",
+        "why it is not 10/10",
+        "approval readiness",
+        "next-step choices in plain chat"
+      ],
+      "mustContainInPlanTaskSkill": [
+        "After recording user answers, locking decisions, or changing `planningState`/`status`, repeat the full consolidated plan review in the same chat response before asking the user what to do next.",
+        "Never ask only for `move to pending`, `approve`, `approved`, `execute`, `park`, or `next step` without that review.",
+        "Any chat response that asks the user for approval, `move to pending`, `move to approved`, execution, parking, lifecycle movement, or a next-step decision must include the full consolidated plan review in that same response.",
+        "This applies after initial plan creation, after questions are answered, after decisions are locked, and after `plan.json` status/planning state changes.",
+        "approval readiness"
+      ],
+      "mustContainInWorkflow": [
+        "Every chat response that asks for approval, `move to pending`, `move to approved`, execution, parking, next-step choices, or lifecycle movement must repeat the full review in the same message",
+        "including after user answers are recorded or decisions are locked",
+        "A response that only says files were updated, answers were recorded, or asks the user to say `move to pending`, `move to approved`, `execute`, or `park` is incomplete."
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "Repeat that full review in the same message before asking for approval, `move to approved`, `move to pending`, execution, parking, next steps, or lifecycle movement."
+      ],
+      "forbiddenWithoutFullReview": [
+        "Next step: tell me move to pending",
+        "tell me move to pending if you want me to submit the plan",
+        "answers recorded. Next step: move to pending"
+      ]
+    },
+    {
+      "id": "path-aware-lessons-system",
+      "failureMode": "Generated workflows read only the lesson archive, omit path-aware matching/reporting, or overwrite live lesson ledgers during installation.",
+      "requiredRule": "Use lessons-active.md and lessons-index.json before selectively reading lessons.md; report Relevant Lessons during planning and Applied lessons during execution; log every user correction and preserve live lesson files as create-if-missing seeds.",
+      "requiredSeedFiles": [
+        "docs/tasks/lessons.md",
+        "docs/tasks/lessons-active.md",
+        "docs/tasks/lessons-index.json"
+      ],
+      "mustContainInPlanTaskSkill": [
+        "## Path-Aware Lessons Gate",
+        "`docs/tasks/lessons-active.md`",
+        "`docs/tasks/lessons-index.json`",
+        "read `docs/tasks/lessons.md` only for matched lesson IDs that need extra context",
+        "## Relevant Lessons",
+        "`Relevant lessons: none.`"
+      ],
+      "mustContainInExecutePlanSkill": [
+        "Read the plan's `Relevant Lessons` section and carry those rules into execution.",
+        "`docs/tasks/lessons-active.md`",
+        "`docs/tasks/lessons-index.json`",
+        "State `Applied lessons` with matched lesson IDs/titles before implementation.",
+        "`Applied lessons: none.`"
+      ],
+      "mustContainInCorrectTaskSkill": [
+        "After any user correction, append a reusable recurrence-prevention lesson to `docs/tasks/lessons.md`.",
+        "Add or update its keyword, path-glob, and workflow entry in `docs/tasks/lessons-index.json`.",
+        "promote it to `docs/tasks/lessons-active.md`",
+        "Validate `docs/tasks/lessons-index.json` as parseable JSON after editing it",
+        "Never skip the lessons update after a correction."
+      ],
+      "mustContainInReviewTaskSkill": [
+        "Read the complete plan, including its `Relevant Lessons` section",
+        "`docs/tasks/lessons-active.md`",
+        "`docs/tasks/lessons-index.json`",
+        "State `Applied lessons` before review work.",
+        "`Applied lessons: none.`"
+      ],
+      "mustContainInUserVerificationSkill": [
+        "Read the plan's `Relevant Lessons`",
+        "`docs/tasks/lessons-active.md`",
+        "`docs/tasks/lessons-index.json`",
+        "State `Applied lessons` before presenting verification.",
+        "`Applied lessons: none.`"
+      ],
+      "mustContainInDocumentTaskSkill": [
+        "read the plan's `Relevant Lessons`",
+        "`docs/tasks/lessons-active.md`",
+        "`docs/tasks/lessons-index.json`",
+        "State `Applied lessons` before editing documentation",
+        "`Applied lessons: none.`"
+      ],
+      "mustContainInWorkflow": [
+        "## Path-Aware Lessons System",
+        "`docs/tasks/lessons-active.md` is the curated evergreen set and is read first.",
+        "`docs/tasks/lessons-index.json` is the structured lookup matched by task keywords, expected or confirmed touched paths, and workflow type.",
+        "`Relevant lessons: none.`",
+        "`Applied lessons: none.`",
+        "After a user correction"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Path-Aware Lessons System",
+        "### Self-Improvement Loop",
+        "`docs/tasks/lessons-active.md`",
+        "`docs/tasks/lessons-index.json`",
+        "`Relevant lessons: none.`",
+        "`Applied lessons: none.`"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Path-Aware Lessons System Contract",
+        "a generated task system references only `lessons.md` instead of all three layers",
+        "any lesson ledger seed is treated as a static overwrite file instead of create-if-missing",
+        "validate-semantic-contract.py"
+      ]
+    },
+    {
+      "id": "high-visibility-blocked-response",
+      "failureMode": "Blocked executor/reviewer/sub-agent status is buried at the end of a normal progress update, making it hard for the user to spot.",
+      "requiredRule": "Any true blocker must be reported with # \ud83d\udea8 BLOCKED \u2014 ACTION REQUIRED as the first visible line and include stage, plan, issue, attempted actions, incomplete work, required action, and status.",
+      "mustContainInLifecycleSkills": [
+        "## High-Visibility Blocked Response Contract",
+        "# \ud83d\udea8 BLOCKED \u2014 ACTION REQUIRED",
+        "**Blocked stage:**",
+        "**Blocking issue:**",
+        "**Required user/agent action:**",
+        "The `# \ud83d\udea8 BLOCKED \u2014 ACTION REQUIRED` heading MUST be the first visible line of the response."
+      ],
+      "mustContainInWorkflow": [
+        "## High-Visibility Blocked Response Contract",
+        "# \ud83d\udea8 BLOCKED \u2014 ACTION REQUIRED",
+        "Do not bury blocked status at the end of a normal progress update."
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### High-Visibility Blocked Responses",
+        "# \ud83d\udea8 BLOCKED \u2014 ACTION REQUIRED",
+        "Do not bury blockers at the end of progress updates."
+      ]
+    },
+    {
+      "id": "r1-commit-boundary-reviewer-scope",
+      "failureMode": "Reviewer judges dirty-tree or commit-boundary state instead of only reviewing the task work that was done, or executor stages/stashes unrelated files automatically.",
+      "requiredRule": "Reviewers review only task work, evidence, tests, and checklist state; reviewers do not inspect, judge, block, or comment on dirty-tree or commit-boundary state. Executor/build agent owns the post-R1 commit gate, stages only task-related files, and asks the user before including or stashing unrelated work.",
+      "mustContainInReviewTaskSkill": [
+        "Review only the task work: approved scope, implementation evidence, required tests, verification evidence, and checklist state.",
+        "Do not inspect, judge, approve, reject, block, or comment on repository-wide dirty-tree state",
+        "Do not run commit-boundary commands for decision-making",
+        "reject for missing task evidence, not for dirty-tree or commit-boundary reasons"
+      ],
+      "mustContainInExecutePlanSkill": [
+        "## Post-R1 Executor Commit Gate",
+        "The reviewer must not inspect, judge, block, or comment on dirty-tree or commit-boundary state",
+        "Run `git status --porcelain`",
+        "Stage only files clearly related to this task.",
+        "Do not use `git stash` or `git stash -u` without explicit user approval",
+        "Waive the local commit and leave the task in user verification"
+      ],
+      "mustContainInWorkflow": [
+        "Reviewers review only the work that was done against the approved plan, required tests, evidence, and checklist state.",
+        "Reviewers MUST NOT inspect, judge, approve, reject, block, or comment on repository-wide dirty-tree state",
+        "Reviewers MUST NOT run commit-boundary commands for decision-making",
+        "not for dirty-tree or commit-boundary reasons",
+        "The executor/build agent, not the reviewer, handles the commit gate after R1 approval.",
+        "Do not run broad `git add -A` when unrelated or ambiguous dirty files exist.",
+        "Waive the local commit and leave the task in user verification"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### R1 Commit Boundary",
+        "Reviewers review only the work that was done",
+        "Reviewers must not inspect, judge, approve, reject, block, or comment on repository-wide dirty-tree state",
+        "the executor/build agent handles commit",
+        "never stash without explicit user approval"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "The installed workflow must keep reviewer scope and commit handling completely separate.",
+        "The reviewer reviews only the work that was done",
+        "The reviewer MUST NOT inspect, judge, approve, reject, block, or comment on repository-wide dirty-tree state",
+        "The reviewer MUST NOT run commit-boundary commands for decision-making",
+        "not for dirty-tree or commit-boundary reasons",
+        "The executor/build agent, not the reviewer, handles the commit gate after R1 approval.",
+        "MUST NOT run broad `git add -A` when unrelated or ambiguous dirty files exist",
+        "MUST NOT use `git stash`, especially `git stash -u`, without explicit user approval",
+        "Waive the local commit and leave the task in user verification"
+      ]
+    },
+    {
+      "id": "executor-review-wait-handoff",
+      "failureMode": "Executor spawns or assigns a reviewer, then ends the turn and waits for the user to reactivate it instead of waiting for reviewer feedback and acting on it.",
+      "requiredRule": "After spawning an independent reviewer, the executor must use the platform wait tool, preferably Codex wait_agent, stay active for reviewer results, action rejection feedback, rerun verification, spawn a fresh reviewer and wait again, or proceed to commit/user-verification on approval.",
+      "mustContainInExecutePlanSkill": [
+        "## Mandatory review sub-agent handoff and wait",
+        "call the platform wait tool for that reviewer",
+        "use `wait_agent` with the spawned reviewer agent ID",
+        "Keep the executor turn/session active while waiting.",
+        "must action it in the same active context",
+        "spawn a fresh independent reviewer, and wait again",
+        "Do not end with only \u201creviewer started,\u201d"
+      ],
+      "mustContainInWorkflow": [
+        "## Executor Review Wait Handoff",
+        "Immediately call the platform wait tool for the spawned reviewer.",
+        "use `wait_agent` with the reviewer agent ID",
+        "Do not end the executor turn with only a passive \u201creviewer started\u201d handoff.",
+        "spawns a fresh independent reviewer, and waits again"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Executor Review Wait Handoff",
+        "must immediately use the platform wait tool",
+        "preferably Codex `wait_agent`",
+        "Do not leave the user to reactivate the executor after a passive reviewer handoff."
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Executor Review Wait Tool Rule",
+        "immediately call the platform wait tool for that reviewer",
+        "preferably `wait_agent` with a long timeout",
+        "keep the executor turn/session active",
+        "action the feedback in the same executor context",
+        "spawn a fresh independent reviewer, and wait again",
+        "must not hand off to review and then go idle"
+      ]
+    },
+    {
+      "id": "non-blocking-commit-action-needed-format",
+      "failureMode": "After R1 approval and user-verification movement, a local commit ambiguity is reported with a giant BLOCKED banner and unnumbered action text that the user can miss.",
+      "requiredRule": "When the task is ready for user verification and only local commit remains ambiguous, use a softer task-ready commit-action-needed heading and end with numbered commit choices.",
+      "mustContainInExecutePlanSkill": [
+        "## Non-Blocking Commit Action Needed Response",
+        "# \u2705 TASK READY FOR USER VERIFICATION \u2014 COMMIT ACTION NEEDED",
+        "Do not use `# \ud83d\udea8 BLOCKED \u2014 ACTION REQUIRED` when commit is the only unresolved follow-up after user-verification handoff.",
+        "The final visible section MUST be `## Choose one commit option`",
+        "1. Commit only these named task files",
+        "4. Waive the local commit and leave the task in user verification."
+      ],
+      "mustContainInWorkflow": [
+        "## Non-Blocking Commit Action Needed Format",
+        "unresolved local commit ambiguity is not a task blocker",
+        "# \u2705 TASK READY FOR USER VERIFICATION \u2014 COMMIT ACTION NEEDED",
+        "The final visible section must be `## Choose one commit option` with numbered choices.",
+        "Do not use it when the task is already in user verification and the only unresolved follow-up is local commit ambiguity"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Non-Blocking Commit Action Needed",
+        "do not use the big blocked banner",
+        "# \u2705 TASK READY FOR USER VERIFICATION \u2014 COMMIT ACTION NEEDED",
+        "## Choose one commit option",
+        "waive the local commit and leave the task in user verification"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "### Non-Blocking Commit Action Needed Format",
+        "an unresolved local commit is not a task blocker",
+        "# \u2705 TASK READY FOR USER VERIFICATION \u2014 COMMIT ACTION NEEDED",
+        "The final visible section of the response must be `## Choose one commit option` with numbered options."
+      ]
+    },
+    {
+      "id": "plan-next-step-numbered-options",
+      "failureMode": "Agent presents an approval-ready plan and asks for vague approval or only move to pending instead of the required 1/2/3 choices.",
+      "requiredRule": "Approval-ready plan handoff must end with numbered choices: 1 move to approved and execute using execute-plan, 2 move to pending, 3 park.",
+      "mustContainInPlanTaskSkill": [
+        "## Choose next step",
+        "1. Move to approved and execute the plan using the execute-plan skill.",
+        "2. Move to pending.",
+        "3. Park.",
+        "Reply with `1`, `2`, or `3`.",
+        "The agent MUST treat `1` as explicit approval to move the plan to `approved` and immediately execute it with `.agents/skills/execute-plan/SKILL.md`"
+      ],
+      "mustContainInWorkflow": [
+        "## Plan Next-Step Choice Contract",
+        "1. Move to approved and execute the plan using the execute-plan skill.",
+        "Reply with `1`, `2`, or `3`.",
+        "`1` as explicit approval to move the plan to `approved` and execute it with `.agents/skills/execute-plan/SKILL.md`"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Plan Next-Step Choices",
+        "1. Move to approved and execute the plan using the execute-plan skill.",
+        "The user may reply `1`, `2`, or `3`",
+        "`1` means approve and execute with `execute-plan`"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Plan Next-Step Choice Contract",
+        "1. Move to approved and execute the plan using the execute-plan skill.",
+        "The generated `plan-task` skill, workflow, semantic contract, and AGENTS managed block MUST state that the user can reply with `1`, `2`, or `3`"
+      ],
+      "forbiddenWithoutNumberedOptions": [
+        "Next step: tell me move to pending",
+        "tell me move to pending if you want me to submit the plan",
+        "What do you want me to do next?"
+      ]
+    },
+    {
+      "id": "full-context-clarification-questions",
+      "failureMode": "Agent asks abbreviated planning questions without full reasoning, trade-offs, recommendations, or a recommended-answer bundle.",
+      "requiredRule": "Clarification questions must include full question text, why it matters, exactly three clear options, recommendation, all material questions, six-question limit when possible, and recommended-answer bundle for six or fewer questions.",
+      "mustContainInPlanTaskSkill": [
+        "## Full-Context Clarification Question Contract",
+        "full explanation and reasoning for why the question matters",
+        "exactly three clear answer options",
+        "The agent MUST limit the question set to six when possible",
+        "Reply `recommended` to proceed with all recommended answers",
+        "answer individually using `Q1=A, Q2=B`"
+      ],
+      "mustContainInWorkflow": [
+        "## Full-Context Clarification Questions",
+        "the full explanation and reasoning for why the question matters",
+        "exactly three clear answer options",
+        "limiting the question set to six when possible",
+        "Reply `recommended` to proceed with all recommended answers"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "Clarification questions must include the full question, why it matters, exactly three clear options, a recommended answer",
+        "a six-question limit when possible",
+        "a `recommended` bundle when six or fewer questions are asked"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Full-Context Clarification Question Contract",
+        "the full explanation and reasoning for why the question matters",
+        "exactly three clear answer options",
+        "a six-question limit when possible",
+        "recommended-answer bundle"
+      ]
+    },
+    {
+      "id": "post-plan-change-preparation",
+      "failureMode": "Agent blindly implements additional changes after a plan has already been executed, without reading docs, scanning source, understanding current behavior, asking needed questions, or updating docs.",
+      "requiredRule": "Additional changes after approval/execution/review/user verification require a preparation gate even when no new plan is created: read docs, scan code, understand current implementation, ask material questions, make change, verify, and update docs.",
+      "mustContainInExecutePlanSkill": [
+        "## Post-Plan Change Preparation Gate",
+        "the executor MUST NOT blindly implement them",
+        "This gate also applies when the agent decides a new plan is not required.",
+        "Re-read the current `documentation/AGENTS.md` route",
+        "Scan the relevant codebase/source paths",
+        "Record a `Post-plan change intake` entry",
+        "Only then make the change, rerun the relevant tests/verification, and update documentation where needed.",
+        "route back to `plan-task` for a new or amended plan"
+      ],
+      "mustContainInWorkflow": [
+        "## Post-Plan Change Preparation Gate",
+        "additional user-requested changes must not be blindly implemented",
+        "Even when no new plan is created",
+        "read relevant documentation, scan the relevant codebase/source paths, understand the current implementation",
+        "update documentation where needed"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Post-Plan Change Preparation",
+        "additional user-requested changes must not be blindly implemented",
+        "Even when no new plan is created",
+        "first read relevant documentation, scan relevant code/source paths, understand the current implementation",
+        "update documentation where needed"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Post-Plan Change Preparation Contract",
+        "avoid blindly implementing additional user changes after a plan has already been approved, executed, reviewed, or moved through user verification",
+        "Even when no new plan is created",
+        "read relevant documentation, scan relevant code/source paths, understand the current implementation",
+        "update documentation where needed"
+      ]
+    },
+    {
+      "id": "codex-end-goal-goal-tool-contract",
+      "failureMode": "Plans omit a concise outcome-level end goal, use a copied checklist/minimum target as the goal, or executors start work without setting the plan objective as the active Codex goal.",
+      "requiredRule": "Plan-task must define a concise outcome-level Codex End Goal with a clear completion guard in plan.json, 01-original-scope, Plan Quality Assessment, and chat review; execute-plan must set that objective with get_goal/create_goal before implementation and respect update_goal closeout rules.",
+      "mustContainInPlanTaskSkill": [
+        "## Codex End Goal Contract",
+        "Every task plan MUST define a clear `Codex End Goal`",
+        "`plan.json.codexEndGoal`",
+        "`01-original-scope.md` under `## Codex End Goal`",
+        "one concise, concrete, outcome-based objective in plain language",
+        "not a repeat of the implementation plan, testing checklist, documentation checklist, review process, or every file/panel/item in the plan",
+        "explicit about the main completion guard",
+        "A plan without a valid concise outcome-level `Codex End Goal` is not approval-ready"
+      ],
+      "mustContainInExecutePlanSkill": [
+        "## Codex Goal Pre-flight Contract",
+        "Confirm the goal is a concise outcome-level definition of done with a clear completion guard",
+        "not a copied plan checklist, process checklist, minimum-requirements target, or minimum-viable target",
+        "call `get_goal` to inspect the current Codex goal state",
+        "call `create_goal` with `objective` equal to the exact `Codex End Goal`",
+        "Do not set `token_budget` unless the user explicitly requested one",
+        "If an active unfinished goal exists and does not match this plan, do not overwrite or mark it complete",
+        "Do not call `update_goal(status=\"complete\")` until the concise outcome objective is actually achieved and no required work remains"
+      ],
+      "mustContainInWorkflow": [
+        "## Codex End Goal and Goal Tool Contract",
+        "`plan.json.codexEndGoal`",
+        "concise, outcome-level, bounded to approved scope",
+        "state the core completion guard without repeating the implementation plan, testing checklist, documentation checklist, review process, or every detailed item in the plan",
+        "confirm it is concise, outcome-level, and not a copied checklist, minimum-only target, or shortcut target",
+        "call `get_goal`",
+        "call `create_goal` with that objective",
+        "do not call `update_goal(status=\"complete\")` until the objective is actually achieved and no required work remains"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Codex Goal Contract",
+        "clear, concise `Codex End Goal`",
+        "finished task outcome and core completion guard",
+        "without repeating the implementation plan, testing checklist, documentation checklist, review process, or every detailed item in the plan",
+        "Executors must set that objective with the Codex goal feature before implementation",
+        "call `get_goal`",
+        "call `create_goal` with the exact objective",
+        "Do not mark a goal complete until the objective is actually achieved and no required work remains"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Codex Goal Contract",
+        "define a clear `Codex End Goal` in `plan.json.codexEndGoal`",
+        "concise, outcome-level, bounded to approved scope",
+        "state the core completion guard without repeating the implementation plan, testing checklist, documentation checklist, review process, or every detailed item in the plan",
+        "confirm the goal is concise, outcome-level, not a copied checklist, and not a minimum-only or shortcut target",
+        "call `get_goal`",
+        "call `create_goal` with the exact objective",
+        "must not call `update_goal(status=\"complete\")` until the objective is actually achieved and no required work remains"
+      ]
+    },
+    {
+      "id": "plan-folder-creation-helper",
+      "failureMode": "Agents cannot find a dedicated plan-folder creation helper and hand-craft plan.json/section files, causing schema drift.",
+      "requiredRule": "The task system must ship and reference docs/tasks/task-system-helpers/create-plan-folder.py for new plan-folder creation; direct creation is only fallback after recording helper failure.",
+      "requiredFiles": [
+        "docs/tasks/task-system-helpers/create-plan-folder.py",
+        "docs/tasks/task-system-helpers/README.md"
+      ],
+      "mustContainInPlanTaskSkill": [
+        "## Plan Folder Creation Helper Contract",
+        "docs/tasks/task-system-helpers/create-plan-folder.py",
+        "The planner MUST use this helper for new plan-folder creation whenever it exists",
+        "The planner MUST NOT say there is no plan-folder creation helper unless it has checked exactly `docs/tasks/task-system-helpers/create-plan-folder.py`",
+        "Direct folder creation is only a fallback after recording the exact helper path and failure"
+      ],
+      "mustContainInWorkflow": [
+        "## Plan Folder Creation Helper",
+        "docs/tasks/task-system-helpers/create-plan-folder.py",
+        "Agents must check `docs/tasks/task-system-helpers/create-plan-folder.py` before claiming no helper exists",
+        "Direct folder creation is only a fallback after recording the exact helper path and failure"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "docs/tasks/task-system-helpers/create-plan-folder.py",
+        "direct creation is only a fallback after recording the helper failure"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Plan Folder Creation Helper Contract",
+        "docs/tasks/task-system-helpers/create-plan-folder.py",
+        "The helper must scan all lifecycle folders, calculate the next five-digit ID, create `plan.json` with `codexEndGoal`, and create all twelve canonical section files",
+        "Agents MUST NOT claim no helper exists unless they checked `docs/tasks/task-system-helpers/create-plan-folder.py`"
+      ]
+    },
+    {
+      "id": "quick-fix-preflight-readiness-gate",
+      "failureMode": "Simple fixes are forced through the full plan lifecycle, or agents start implementation before checking required databases, services, dev servers, package installs, ports, browsers, credentials, or provider readiness.",
+      "requiredRule": "Install Quick Fix Mode for isolated low-risk fixes and require a proportional Pre-flight Readiness Gate before quick-fix or approved-plan implementation edits.",
+      "requiredFiles": [
+        ".agents/skills/quick-fix/SKILL.md",
+        "docs/tasks/quick-fixes/README.md"
+      ],
+      "requiredFolders": [
+        ".agents/skills/quick-fix",
+        "docs/tasks/quick-fixes"
+      ],
+      "mustContainInQuickFixSkill": [
+        "# Quick Fix Skill",
+        "Use Quick Fix Mode only when all of these are true:",
+        "## Pre-flight Readiness Gate",
+        "If a live dependency is required, run the cheapest documented health/readiness check for it before editing.",
+        "stop early and report a pre-flight environment blocker",
+        "docs/tasks/quick-fixes/YYYY-MM-DD.md",
+        "The quick-fix log is not a plan folder"
+      ],
+      "mustContainInPlanTaskSkill": [
+        "## Quick Fix Triage Gate",
+        "classify the request as `Quick Fix`, `Standard Plan`, or `Full Robust Plan`",
+        "Use `.agents/skills/quick-fix/SKILL.md` instead of this skill only when the request is a single-purpose, isolated, low-risk change",
+        "Quick Fix Mode still requires a proportional inspect-first workflow, the `Pre-flight Readiness Gate`, targeted verification, and a quick-fix log entry under `docs/tasks/quick-fixes/YYYY-MM-DD.md`"
+      ],
+      "mustContainInExecutePlanSkill": [
+        "## Pre-flight Readiness Gate",
+        "Before editing any implementation file, run a `Pre-flight Readiness Gate`",
+        "database, server, service, credential, migration, package, port, or browser failures",
+        "Record the result in `06-executor-report.md` under `Pre-flight Readiness Gate`",
+        "Do not begin repairing databases, dev servers, ports, migrations, credentials, generated assets, or unrelated environment state unless the approved plan includes that repair or the user explicitly expands scope."
+      ],
+      "mustContainInWorkflow": [
+        "## Task Mode Triage",
+        "### Quick Fix Mode",
+        "Use `.agents/skills/quick-fix/SKILL.md` for a single-purpose, isolated, low-risk fix",
+        "docs/tasks/quick-fixes/YYYY-MM-DD.md",
+        "## Pre-flight Readiness Gate",
+        "If a required dependency is unhealthy before editing, stop early and report it as an environment/readiness blocker."
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "Use `.agents/skills/quick-fix/SKILL.md` for single-purpose, isolated, low-risk fixes that qualify for the fast path.",
+        "### Quick Fix and Pre-flight Readiness",
+        "Quick Fix Mode bypasses the 12-file plan folder only for a single-purpose, isolated, low-risk fix",
+        "Before editing in Quick Fix or Execute Plan mode, run a proportional `Pre-flight Readiness Gate`"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Quick Fix and Pre-flight Readiness Package Contract",
+        ".agents/skills/quick-fix/SKILL.md",
+        "docs/tasks/quick-fixes/README.md",
+        "Task Mode Triage: Quick Fix, Standard Plan, and Full Robust Plan",
+        "The generated execute-plan workflow MUST require a `Pre-flight Readiness Gate` before implementation edits"
+      ]
+    },
+    {
+      "id": "task-system-config-snapshot-and-user-verification-done",
+      "failureMode": "Agents cannot be configured from YAML to disable Codex goal tool calls or reviewer sub-agent spawning, explicit plan-task mode parameters are ignored, and plans left in user-verification are treated as dirty/active even when the user wants that stage to count as done.",
+      "requiredRule": "Preserve docs/tasks/task-system.config.yaml, snapshot effective config into new plan.json files, obey config in execute-plan, recognize explicit plan-task mode parameters, and treat user-verification as agent-complete/done when configured.",
+      "requiredSeedFiles": [
+        "docs/tasks/task-system.config.yaml"
+      ],
+      "requiredSchemaFiles": [
+        "schemas/task-system.config.schema.json"
+      ],
+      "mustContainInPlanTaskSkill": [
+        "## Task-System Configuration Gate",
+        "read `docs/tasks/task-system.config.yaml`",
+        "snapshot the effective config into `plan.json.taskSystemConfigSnapshot`",
+        "Existing plans use their snapshot",
+        "`lifecycle.userVerification.treatAsDoneForAgentWork`",
+        "## Explicit Mode Invocation Contract",
+        "$plan-task --quick",
+        "$plan-task --standard",
+        "$plan-task --full",
+        "Record the requested mode, effective mode, and reason"
+      ],
+      "mustContainInExecutePlanSkill": [
+        "## Task-System Config Snapshot Contract",
+        "read `plan.json.taskSystemConfigSnapshot.config`",
+        "If `codexGoal.enabled` is false, do not call `get_goal`, `create_goal`, or `update_goal`.",
+        "If `review.requireIndependentR1` is true and `review.autoSpawnSubagent` is false",
+        "If `lifecycle.userVerification.treatAsDoneForAgentWork` is true, moving to `user-verification` is considered agent-complete/done for active-work triage."
+      ],
+      "mustContainInReviewTaskSkill": [
+        "## Config-aware review scope",
+        "read `plan.json.taskSystemConfigSnapshot.config`",
+        "treat that lifecycle as an agent-complete handoff state"
+      ],
+      "mustContainInUserVerificationSkill": [
+        "## Config-aware user-verification handling",
+        "Read `plan.json.taskSystemConfigSnapshot.config`",
+        "treated as confirmed agent-complete/done for active-work triage",
+        "Do not label it dirty, stale, blocked, or incomplete solely because the user has not moved it to `completed`."
+      ],
+      "mustContainInWorkflow": [
+        "## Task-System Configuration",
+        "docs/tasks/task-system.config.yaml",
+        "Planning must snapshot the effective config into `plan.json.taskSystemConfigSnapshot`.",
+        "When `codexGoal.enabled` is false",
+        "When `review.autoSpawnSubagent` is false",
+        "When `lifecycle.userVerification.treatAsDoneForAgentWork` is true",
+        "## Explicit Plan-Task Mode Parameters",
+        "$plan-task --quick",
+        "$plan-task --standard",
+        "$plan-task --full"
+      ],
+      "mustContainInAgentsManagedBlock": [
+        "### Task-System Config",
+        "Read `docs/tasks/task-system.config.yaml` for project-local defaults.",
+        "New plans snapshot the effective settings into `plan.json.taskSystemConfigSnapshot`",
+        "plans left in `user-verification` count as agent-complete/done",
+        "### Explicit Plan-Task Mode Parameters",
+        "$plan-task --quick",
+        "$plan-task --standard",
+        "$plan-task --full"
+      ],
+      "mustContainInGeneratorPrompt": [
+        "## Task-System Config Package Contract",
+        "docs/tasks/task-system.config.yaml",
+        "docs/tasks/schemas/task-system.config.schema.json",
+        "copy `docs/tasks/task-system.config.yaml` only when missing",
+        "plan.json.taskSystemConfigSnapshot",
+        "lifecycle.userVerification.treatAsDoneForAgentWork",
+        "$plan-task --quick",
+        "@plan-task --standard",
+        "/plan-task --full"
+      ],
+      "mustContainInHelper": [
+        "DEFAULT_TASK_SYSTEM_CONFIG",
+        "load_task_system_config",
+        "taskSystemConfigSnapshot",
+        "task-system.config.yaml",
+        "defaultMode"
+      ]
+    },
+    {
+      "id": "valid-skill-yaml-frontmatter",
+      "failureMode": "Generated SKILL.md files fail to load because they are missing YAML frontmatter, omit name, omit description, or have malformed frontmatter.",
+      "requiredRule": "Every generated .agents/skills/*/SKILL.md must start with valid YAML frontmatter containing name equal to the skill folder and a non-empty description before the closing --- delimiter.",
+      "mustContainInGeneratorPrompt": [
+        "Every generated `.agents/skills/*/SKILL.md` file MUST start with valid YAML frontmatter.",
+        "`name:` MUST equal the skill folder name.",
+        "`description:` MUST be present and non-empty.",
+        "The generator audit MUST fail if any `SKILL.md` is missing valid frontmatter."
+      ]
+    }
+  ]
+}

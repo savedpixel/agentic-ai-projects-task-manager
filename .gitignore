@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.DS_Store
+data/runtime/
+data/temp/
+*.log
+__pycache__/
+*.pyc
+release/
+build/
+native/**/.build/
+*.dmg
+*.zip

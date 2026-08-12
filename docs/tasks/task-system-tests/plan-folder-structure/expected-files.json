@@ -1,0 +1,28 @@
+{
+  "files": [
+    "docs/tasks/workflow.md",
+    "docs/tasks/todo.md",
+    "docs/tasks/lessons.md",
+    "docs/tasks/lessons-active.md",
+    "docs/tasks/lessons-index.json",
+    "docs/tasks/planning/README.md",
+    "docs/tasks/quick-fixes/README.md",
+    "docs/tasks/task-system.config.yaml",
+    ".agents/skills/plan-task/SKILL.md",
+    ".agents/skills/quick-fix/SKILL.md",
+    ".agents/skills/execute-plan/SKILL.md",
+    ".agents/skills/review-task/SKILL.md",
+    ".agents/skills/user-verification/SKILL.md",
+    ".agents/skills/correct-task/SKILL.md",
+    ".agents/skills/document-task/SKILL.md",
+    "docs/tasks/task-system-tests/plan-folder-structure/README.md",
+    "docs/tasks/task-system-tests/plan-folder-structure/expected-folders.json",
+    "docs/tasks/task-system-tests/plan-folder-structure/expected-files.json",
+    "docs/tasks/task-system-tests/plan-folder-structure/expected-plan-json.schema.json",
+    "docs/tasks/task-system-tests/plan-folder-structure/expected-budgets.json",
+    "docs/tasks/task-system-tests/plan-folder-structure/semantic-contract.json",
+    "docs/tasks/task-system-helpers/README.md",
+    "docs/tasks/task-system-helpers/create-plan-folder.py",
+    "docs/tasks/schemas/task-system.config.schema.json"
+  ]
+}

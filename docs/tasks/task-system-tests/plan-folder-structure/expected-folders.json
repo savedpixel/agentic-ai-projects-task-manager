@@ -1,0 +1,26 @@
+{
+  "folders": [
+    "docs/tasks/planning/draft",
+    "docs/tasks/planning/pending",
+    "docs/tasks/planning/approved",
+    "docs/tasks/planning/in-progress",
+    "docs/tasks/planning/review",
+    "docs/tasks/planning/user-verification",
+    "docs/tasks/planning/failed-user-verification",
+    "docs/tasks/planning/completed",
+    "docs/tasks/planning/archive",
+    "docs/tasks/planning/parked",
+    "docs/tasks/planning/blocker",
+    "docs/tasks/reviews",
+    "docs/tasks/logs",
+    "docs/tasks/quick-fixes",
+    "docs/tasks/task-system-tests/plan-folder-structure",
+    ".agents/skills/plan-task",
+    ".agents/skills/quick-fix",
+    ".agents/skills/execute-plan",
+    ".agents/skills/review-task",
+    ".agents/skills/user-verification",
+    ".agents/skills/correct-task",
+    ".agents/skills/document-task"
+  ]
+}
